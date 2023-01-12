@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Budgeting App</title>
+        <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" rel="stylesheet">
+        <style>
+        /* Add some custom CSS styles */
+/* Add some custom CSS styles */
+  table {
+    margin-top: 20px;
+  }
+  
+  th, td {
+    text-align: left;
+    padding: 10px;
+  }
+  
+  .container {
+    background-color: rgba(255, 255, 255, 0.7); /* Make the background slightly transparent */
+    padding: 20px; /* Add some padding */
+  }
+
+  #submit{
+    background-color: teal;
+  }
+
+  #headings{
+    background-color: teal;
+  }
+
+        </style>
+      </head>
+      <body class="bg-gray-200">
+        <div class="container mx-auto p-4">
+           <center><i class="fa-solid fa-calculator"></i><p>
+                Budget Calculator
+            </p></center> 
+    
+          <form class="bg-white rounded p-4">
+            <div class="mb-4">
+              <label class="block text-gray-700 font-medium mb-2" for="category">Category:</label>
+              <input class="border border-gray-400 p-2 rounded-sm w-full" type="text" id="category" name="category">
+            </div>
+          
+            <div class="mb-4">
+              <label class="block text-gray-700 font-medium mb-2" for="frequency">Frequency:</label>
+              <select class="border border-gray-400 p-2 rounded-sm w-full" id="frequency" name="frequency">
+                <option value="weekly">Weekly</option>
+                <option value="monthly">Monthly</option>
+                <option value="quarterly">Quarterly</option>
+              </select>
+            </div>
+          
+            <div class="mb-4">
+              <label class="block text-gray-700 font-medium mb-2" for="amount">Amount:</label>
+              <input class="border border-gray-400 p-2 rounded-sm w-full" type="number" id="amount" name="amount">
+            </div>
+          
+            <input id="submit"class="bg-indigo-500 text-white rounded p-2" type="button" value="Submit" onclick="addExpense()">
+          </form>
+    
+          <table class="bg-white rounded-lg">
+            <thead id="headings" class="bg-indigo-500 text-white">
+              <tr>
+                <th class="p-2">Category</th>
+                <th class="p-2">Frequency</th>
+                <th class="p-2">Amount</th>
+                <th class="p-2">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="expense-list"></tbody>
+          </table>
+    
+          <div class="bg-white rounded p-4">
+            <p>Total: <span id="total"></span></p>
+            <p>Weekly: <span id="weekly"></span></p>
+            <p>Fortnightly: <span id="fortnightly"></span></p>
+            <p>Quarterly: <span id="quarterly"></span></p>
+        </div> 
+        </div>
+    
+        <script>
+            var total = 0;
+            var weekly = 0;
+            var fortnightly = 0;
+            var quarterly = 0;
+            function addExpense() {
+                // Get the values from the form inputs
+                var category = document.getElementById("category").value;
+                var frequency = document.getElementById("frequency").value;
+                var amount = parseFloat(document.getElementById("amount").value);
+            
+                //Add a new row to the expense list
+                var expenseList = document.getElementById("expense-list");
+                var row = document.createElement("tr");
+                var deleteBtn = document.createElement("button");
+                deleteBtn.innerHTML = "X";
+                deleteBtn.className = "bg-red";
+                row.innerHTML = "<td>" + category + "</td><td>" + frequency + "</td><td>" + amount + "</td><td>";
+                row.appendChild(deleteBtn);
+                expenseList.appendChild(row);
+
+//update the total and other figures
+total += amount;
+document.getElementById("total").innerHTML = total;
+if(frequency === "weekly"){
+    weekly += amount;
+    document.getElementById("weekly").innerHTML = weekly;
+    fortnightly = weekly * 2;
+    document.getElementById("fortnightly").innerHTML = fortnightly;
+    quarterly = fortnightly * 6;
+    document.getElementById("quarterly").innerHTML = quarterly;
+}else if(frequency === "fortnightly"){
+    fortnightly += amount;
+    document.getElementById("fortnightly").innerHTML = fortnightly;
+    weekly = fortnightly / 2;
+    document.getElementById("weekly").innerHTML = weekly;
+    quarterly = fortnightly * 3;
+    document.getElementById("quarterly").innerHTML = quarterly;
+}else if(frequency === "quarterly"){
+    quarterly += amount;
+    document.getElementById("quarterly").innerHTML = quarterly;
+    fortnightly = quarterly / 3;
+    document.getElementById("fortnightly").innerHTML = fortnightly;
+    weekly = fortnightly / 2;
+    document.getElementById("weekly").innerHTML = weekly;
+}
+    
+              //attach a click event listener to the delete button
+              deleteBtn.addEventListener("click", function() {
+                //remove the row
+                expenseList.removeChild(row);
+                //update the total
+                total -= amount;
+                document.getElementById("total").innerHTML = total;
+                if(frequency === "weekly"){
+                    weekly -= amount;
+                    document.getElementById("weekly").innerHTML = weekly;
+                }else if(frequency === "fortnightly"){
+                    fortnightly -= amount;
+                    document.getElementById("fortnightly").innerHTML = fortnightly;
+                }else if(frequency === "quarterly"){
+                    quarterly -= amount;
+                    document.getElementById("quarterly").innerHTML = quarterly;
+                }
+              });
+
+              //clear the form
+              document.getElementById("category").value = "";
+              document.getElementById("amount").value = "";
+            
+        }
+        </script> 
+  </body>
+</html>
