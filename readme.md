@@ -43,5 +43,4 @@ Copy code
 
 - **[Ben Ferdinands](https://github.com/bferdi)**
 
-## Acknowledgments
 
