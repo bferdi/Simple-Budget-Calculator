@@ -1,4 +1,4 @@
-# Budget Calculator
+# Budget Calculator (WIP / Incompleted)
 
 This budget calculator app allows users to input expenses by category, frequency, and amount. 
 The app calculates and displays the total, as well as the costs broken down by weekly, fortnightly, and quarterly.
